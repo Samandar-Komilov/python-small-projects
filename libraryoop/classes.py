@@ -18,8 +18,8 @@ class LibraryItem(ABC):
 ########### CONCRETE CLASSES ############
 
 class Book(LibraryItem):
-    def __init__(self, title, author, isbn, publication_year):
-        self.title = title
+    def __init__(self, title, item_id, author, isbn="", publication_year=""):
+        super().__init__(title, item_id)
         self.author = author
         self.isbn = isbn
         self.publication_year = publication_year
@@ -27,6 +27,18 @@ class Book(LibraryItem):
     
     def __str__(self):
         return f"<Book: '{self.title}'>"
+    
+
+
+class Magazine(LibraryItem):
+    def __init__(self, title, item_id, issue_number, publisher):
+        super().__init__(title, item_id)
+        self.issue_number = issue_number
+        self.publisher = publisher
+
+    
+    def __str__(self):
+        return f"<Magazine: '{self.title}'>"
     
 
 
