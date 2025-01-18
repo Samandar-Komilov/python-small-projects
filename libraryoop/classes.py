@@ -18,11 +18,59 @@ class LibraryItem(ABC):
 ########### CONCRETE CLASSES ############
 
 class Book(LibraryItem):
-    def __init__(self, title, item_id, author, isbn="", publication_year=""):
+    def __init__(self, title, item_id, author, publication_year=""):
         super().__init__(title, item_id)
         self.author = author
-        self.isbn = isbn
+        self.__isbn = None
         self.publication_year = publication_year
+
+    @property
+    def isbn(self):
+        return self.__isbn
+    
+    def set_isbn(self, val):
+        if self.is_valid_isbn(val):
+            self.__isbn = val
+        else:
+            raise ValueError("Invalid ISBN format")
+
+    @staticmethod
+    def is_valid_isbn(isbn):
+        isbn = isbn.replace("-", "").replace(" ", "")
+        return Book.is_valid_isbn10(isbn) or Book.is_valid_isbn13(isbn)
+        
+    @staticmethod
+    def is_valid_isbn10(isbn):
+        if len(isbn) != 10:
+            return False
+        
+        sum = 0
+        for i in range(9):
+            if not isbn[i].isdigit():
+                return False
+            sum += int(isbn[i]) * (10 - i)
+        
+        if isbn[9] == 'X':
+            sum += 10
+        elif isbn[9].isdigit():
+            sum += int(isbn[9])
+        else:
+            return False
+        
+        return sum % 11 == 0
+
+    @staticmethod
+    def is_valid_isbn13(isbn):
+        if len(isbn) != 13 or not isbn.isdigit():
+            return False
+        
+        sum = 0
+        for i in range(12):
+            sum += int(isbn[i]) * (1 if i % 2 == 0 else 3)
+        
+        check_digit = (10 - (sum % 10)) % 10
+        
+        return int(isbn[12]) == check_digit
 
     
     def __str__(self):
@@ -58,16 +106,25 @@ class Member:
     def __init__(self, name, member_id):
         self.name = name
         self.member_id = member_id
-        self.borrowed_books = []
+        self.__borrowed_books = []
+
+    @property
+    def borrowed_books(self):
+        return tuple(self.__borrowed_books)
     
     def borrow_book(self, book):
-        self.borrowed_books.append(book)
-        return self.borrowed_books
+        if book not in self.__borrowed_books:
+            self.__borrowed_books.append(book)
+        return f"Book '{book}' borrowed successfully."
     
     def return_book(self, book):
-        self.borrowed_books.remove(book)
-        return self.borrowed_books
-
+        if book in self.__borrowed_books:
+            self.__borrowed_books.remove(book)
+            return f"Book '{book}' returned successfully."
+        return f"Book '{book}' was not borrowed by this member."
+    
+    def has_borrowed(self, book):
+        return book in self.borrowed_books
     
     def __str__(self):
-        return f"<Member '{self.name}'>"
+        return f"<Member: '{self.name}'>"
