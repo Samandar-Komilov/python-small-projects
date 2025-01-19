@@ -3,6 +3,18 @@ from abc import ABC, abstractmethod
 
 ############ ABSTRACT CLASSES ############
 
+
+class Borrowable(ABC):
+    @abstractmethod
+    def borrow(self, member):
+        pass
+
+    @abstractmethod
+    def return_item(self, member):
+        pass
+
+
+
 class LibraryItem(ABC):
     def __init__(self, title, item_id):
         self.title = title
@@ -17,22 +29,39 @@ class LibraryItem(ABC):
 
 ########### CONCRETE CLASSES ############
 
-class Book(LibraryItem):
+class Book(Borrowable, LibraryItem):
     def __init__(self, title, item_id, author, publication_year=""):
         super().__init__(title, item_id)
         self.author = author
         self.__isbn = None
+        self.__pages = 0
         self.publication_year = publication_year
-
     @property
     def isbn(self):
         return self.__isbn
+
     
-    def set_isbn(self, val):
+    @isbn.setter
+    def isbn(self, val):
         if self.is_valid_isbn(val):
             self.__isbn = val
         else:
             raise ValueError("Invalid ISBN format")
+        
+    @property
+    def pages(self):
+        return self.__pages
+
+    @pages.setter
+    def pages(self, val):
+        if val > 0:
+            self.__pages = val
+
+    def borrow(self, member):
+        member.borrow_book(self)
+
+    def return_item(self, member):
+        member.return_book(self)
 
     @staticmethod
     def is_valid_isbn(isbn):
@@ -71,19 +100,30 @@ class Book(LibraryItem):
         check_digit = (10 - (sum % 10)) % 10
         
         return int(isbn[12]) == check_digit
-
+    
+    # Magic methods
+    def __eq__(self, other):
+        return self.isbn == other.isbn
+    
+    def __len__(self):
+        return self.pages
     
     def __str__(self):
         return f"<Book: '{self.title}'>"
     
 
 
-class Magazine(LibraryItem):
+class Magazine(Borrowable, LibraryItem):
     def __init__(self, title, item_id, issue_number, publisher):
         super().__init__(title, item_id)
         self.issue_number = issue_number
         self.publisher = publisher
+    
+    def borrow(self, member):
+        return member.borrow_book(self)
 
+    def return_item(self, member):
+        return member.return_item(self)
     
     def __str__(self):
         return f"<Magazine: '{self.title}'>"
