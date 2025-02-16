@@ -2,6 +2,10 @@ from abc import ABC, abstractmethod
 
 from ecommercedp.src.choices import ProductType
 
+"""
+    Factory Pattern: ProductFactory
+"""
+
 class Product(ABC):
     def __init__(self, name, price):
         self.name = name

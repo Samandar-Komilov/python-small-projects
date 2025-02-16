@@ -1,3 +1,7 @@
+"""
+    Singleton Pattern: ShoppingCart
+"""
+
 class ShoppingCart:
     _instance = None
 
