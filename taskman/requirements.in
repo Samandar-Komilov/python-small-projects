@@ -1,0 +1,6 @@
+Django
+celery
+django_celery_beat
+redis
+channels
+daphne
