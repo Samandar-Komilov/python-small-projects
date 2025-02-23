@@ -13,3 +13,10 @@ class Song:
         # pointers
         self.next = None
         self.prev = None
+
+    
+    def __str__(self):
+        return f"<{self.title} by {self.artist} ({self.duration})>"
+    
+    def __repr__(self):
+        return f"<{self.title} by {self.artist} ({self.duration})>"
