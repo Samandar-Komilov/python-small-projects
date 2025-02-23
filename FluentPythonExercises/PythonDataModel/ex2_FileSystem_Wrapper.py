@@ -1,6 +1,16 @@
 
 
 class SmartPath:
+    """
+    A class that wraps a string path in a way that it can be used as an argument to most functions that expect a path-like object.
+    
+    It can be used to add a layer of abstraction between pure string paths
+    and path-like objects. For example, it can be used to allow a function to 
+    accept both string paths and path-like objects.
+    
+    :param path: The path to be wrapped.
+    :type path: str or os.PathLike
+    """
     def __init__(self, path):
         self.path = path
 
@@ -24,4 +34,4 @@ class SmartPath:
         return self.path
     
     def __repr__(self):
-        return f"SmartPath({self.path})"
+        return f"SmartPath<{self.path!r}>"

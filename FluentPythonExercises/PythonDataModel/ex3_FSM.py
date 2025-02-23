@@ -1,4 +1,12 @@
+"""
 
+Usages:
+    - FSM(states=iterable("state1", "state2", "state3"), current_state=None)
+    - FSM("state2") - switch to state2
+    - FSM["state2"] = <something> specify state
+    - 
+
+"""
 
 class FSM:
     def __init__(self):
