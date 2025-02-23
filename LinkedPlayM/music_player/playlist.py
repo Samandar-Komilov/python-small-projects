@@ -1,4 +1,6 @@
-from . import Song
+
+from .file_manager import FileManager
+from .song import Song
 
 
 class Playlist:
@@ -11,7 +13,32 @@ class Playlist:
         self.length: int = 0
 
     def add_song(self, path) -> None:
-        pass
+        is_valid = FileManager.is_valid_audio_file(path)
+
+        if not is_valid:
+            print(f"Error: {path} is not a valid audio file.")
+            return
+        
+        title, artist, duration = FileManager.extract_metadata(path)
+        new_song = Song(
+            title=title,
+            artist=artist,
+            duration=duration,
+            path=path
+        )
+
+        if self.head is None or self.tail is None:
+            self.head = new_song
+            self.tail = new_song
+
+        self.tail.next = new_song
+        self.head.prev = new_song
+
+        self.length += 1
+
+        print(f"Added {title} by {artist} ({duration})")
+
+        return None
 
     def remove_song(self, title: str, artist: str = None) -> Song:
         pass
