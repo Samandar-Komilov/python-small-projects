@@ -3,3 +3,5 @@ mutagen
 pytest
 pytest-cov
 click
+mypy
+pre-commit

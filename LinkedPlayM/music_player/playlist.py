@@ -5,8 +5,8 @@ class Playlist:
     def __init__(self, name: str = None):
         """Init a new empty playlist"""
         self.name = name if name else "New Playlist"
-        self.head: Song = None
-        self.tail: Song = None
+        self.head: Song | None = None
+        self.tail: Song | None = None
 
         self.length: int = 0
 

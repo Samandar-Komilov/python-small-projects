@@ -4,19 +4,19 @@ class Song:
     """
     - LinkedList Node - Song class
     """
-    def __init__(self, title, artist, duration, path):
+    def __init__(self, title: str, artist: str, duration: int, path: str):
         # data
-        self.title = title
-        self.artist = artist
-        self.path = path
-        self.duration = duration
+        self.title: str = title
+        self.artist: str = artist
+        self.path: str = path
+        self.duration: int = duration
         # pointers
-        self.next = None
-        self.prev = None
+        self.next: Song | None = None
+        self.prev: Song | None = None
 
     
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<{self.title} by {self.artist} ({self.duration})>"
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<{self.title} by {self.artist} ({self.duration})>"
